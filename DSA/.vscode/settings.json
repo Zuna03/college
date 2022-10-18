@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "queue": "c",
+        "*.tcc": "c",
+        "chrono": "c",
+        "complex": "c",
+        "functional": "c",
+        "random": "c",
+        "istream": "c",
+        "limits": "c",
+        "valarray": "c",
+        "regex": "c",
+        "iosfwd": "c",
+        "shared_mutex": "c",
+        "streambuf": "c",
+        "ctype.h": "c",
+        "forward_list": "c",
+        "list": "c",
+        "iostream": "cpp"
+    }
+}

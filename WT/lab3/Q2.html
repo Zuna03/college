@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>LAB3_2</title>
+</head>
+<body bgcolor="yellow">
+    <H1>REGISTRATION FORM</H1>
+    <hr>
+    <form>
+        Name : <input type="text" name = "name">
+        <br><br>
+        Password: <input type="password" name = "password">
+        <br><br>
+        Address: <br>
+        <textarea rows = "5" name= "address">Enter address here.
+        </textarea>
+        <br><br>
+        Subjects to give test in: <br>
+        <input type="checkbox" name="maths" value="on"> Maths
+        <input type="checkbox" name="phy" value="on"> Physics
+        <input type="checkbox" name="cs" value="on"> Computer Science
+        <br><br>
+        Test date:
+        <input type="radio" name="date1" value="first"> 1/2/2022
+        <input type="radio" name="date2" value="second"> 2/2/2022
+        <br><br>
+        Time:
+        <select name="dropdown">
+            <option value="time1" selected>10:00 AM</option>
+            <option value="time2" >3:00 PM</option>
+        </select>
+        <br><br>
+        <input type="submit" name="submit" value="Submit">
+        <input type="reset" name="reset" value="Reset">
+    </form>
+</body>
+</html>

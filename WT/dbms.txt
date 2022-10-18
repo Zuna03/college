@@ -1,0 +1,321 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Mar 3 12:35:16 2022
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect anwesha/20051338;
+Connected.
+SQL> spool C:\DBMS\test2_20051338.sql;
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENTID                                 NOT NULL CHAR(5)
+ LAST                                      NOT NULL VARCHAR2(15)
+ FIRST                                     NOT NULL VARCHAR2(15)
+ STREET                                             VARCHAR2(25)
+ CITY                                               VARCHAR2(15)
+ STATE                                              VARCHAR2(2)
+ ZIP                                                VARCHAR2(5)
+ BIRTHDAY                                           DATE
+ PHONE                                              CHAR(10)
+ STARTTERM                                          CHAR(4)
+ FACULTYID                                          NUMBER(3)
+ MAJORID                                            NUMBER(3)
+
+SQL> select avg(extract(year from sysdate) - extract(year from birthday)) as avg , min(extract(year from sysdate) - extract(year from birthday)) as lowest , max(extract(year from sysdate) - extract(year from birthday)) as highest from student;
+
+       AVG     LOWEST    HIGHEST
+---------- ---------- ----------
+40.1666667         37         52
+
+SQL> desc location;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROOMID                                    NOT NULL NUMBER(2)
+ BUILDING                                  NOT NULL VARCHAR2(7)
+ ROOMNO                                    NOT NULL CHAR(3)
+ CAPACITY                                           NUMBER(2)
+ ROOMTYPE                                           CHAR(1)
+
+SQL> select distinct building from location;
+
+BUILDIN
+-------
+Gandhi
+Kennedy
+Nehru
+
+SQL> desc faculty;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FACULTYID                                 NOT NULL NUMBER(3)
+ NAME                                      NOT NULL VARCHAR2(15)
+ PHONE                                              CHAR(3)
+ ROOMID                                             NUMBER(2)
+ DEPTID                                             NUMBER(1)
+
+SQL> select name from faculty where deptidIN(1,2);
+select name from faculty where deptidIN(1,2)
+                                                *
+ERROR at line 1:
+ORA-00920: invalid relational operator
+
+
+SQL> select name from faculty where deptid IN (1,2);
+
+NAME
+---------------
+Jones
+Williams
+Mobley
+Vajpayee
+
+SQL> select * from student where state = 'NY' or state = 'NJ';
+
+STUDE LAST            FIRST           STREET                    CITY
+----- --------------- --------------- ------------------------- ---------------
+ST ZIP   BIRTHDAY  PHONE      STAR  FACULTYID    MAJORID
+-- ----- --------- ---------- ---- ---------- ----------
+00100 Diaz            Jose            1 Ford Avenue #7          Hill
+NJ 08863 12-FEB-83 9735551111 WN03        123        100
+
+00101 Tyler           Mickey          12 Morris Avenue          Bronx
+NY 10468 18-MAR-84 7185552222 SP03        555        500
+
+00102 Patel           Rajesh          25 River Road #3          Edison
+NJ 08837 12-DEC-85 7325553333 WN03        111        400
+
+
+STUDE LAST            FIRST           STREET                    CITY
+----- --------------- --------------- ------------------------- ---------------
+ST ZIP   BIRTHDAY  PHONE      STAR  FACULTYID    MAJORID
+-- ----- --------- ---------- ---- ---------- ----------
+00103 Rickles         Deborah         100 Main Street           Iselin
+NJ 08838 20-OCT-70 7325554444 FL02        555        500
+
+00104 Lee             Brian           2845 First Lane           Hope
+NY 11373 28-NOV-85 2125555555 WN03        345        600
+
+00105 Khan            Amir            213 Broadway              Clifton
+NJ 07222 07-JUL-84 2015556666 WN03        222        200
+
+
+6 rows selected.
+
+SQL> select section from crssection where termid='WN03';
+
+SE
+--
+01
+01
+02
+10
+
+SQL> desc course;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSEID                                  NOT NULL VARCHAR2(6)
+ TITLE                                              VARCHAR2(20)
+ CREDITS                                            NUMBER(1)
+ PREREQ                                             VARCHAR2(6)
+
+SQL> desc crssection;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CSID                                      NOT NULL NUMBER(4)
+ COURSEID                                  NOT NULL VARCHAR2(6)
+ SECTION                                   NOT NULL CHAR(2)
+ TERMID                                    NOT NULL CHAR(4)
+ FACULTYID                                          NUMBER(3)
+ DAY                                                VARCHAR2(2)
+ STARTTIME                                          VARCHAR2(5)
+ ENDTIME                                            VARCHAR2(5)
+ ROOMID                                             NUMBER(2)
+ MAXCOUNT                                           NUMBER(2)
+
+SQL> select courseid , maxcount from crssection order by maxcount desc;
+
+COURSE   MAXCOUNT
+------ ----------
+CIS253         40
+CIS253         40
+CIS253         40
+AC101          35
+CIS265         35
+CIS265         30
+LA123          30
+CIS265         30
+MA150          25
+CIS253          2
+
+10 rows selected.
+
+SQL> select courseid , maxcount from crssection order by maxcount desc group by courseid;
+select courseid , maxcount from crssection order by maxcount desc group by courseid
+                                                                       *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select courseid , maxcount from crssection order by maxcount desc;
+
+COURSE   MAXCOUNT
+------ ----------
+CIS253         40
+CIS253         40
+CIS253         40
+AC101          35
+CIS265         35
+CIS265         30
+LA123          30
+CIS265         30
+MA150          25
+CIS253          2
+
+10 rows selected.
+
+SQL> select courseid from course where prereq is NULL;
+
+COURSE
+------
+EN100
+CIS253
+MA150
+AC101
+
+SQL> select * from course;
+
+COURSE TITLE                   CREDITS PREREQ
+------ -------------------- ---------- ------
+EN100  Basic English                 0
+LA123  English Literature            3 EN100
+CIS253 Database Systems              3
+CIS265 System Analysis               3 CIS253
+MA150  College Algebra               3
+AC101  Accounting                    3
+
+6 rows selected.
+
+SQL> select name from faculty order by deptid , name asc;
+
+NAME
+---------------
+Jones
+Mobley
+Vajpayee
+Williams
+Collins
+Sen
+Rivera
+Chang
+
+8 rows selected.
+
+SQL> select name, deptid from faculty order by deptid desc, name asc;
+
+NAME                DEPTID
+--------------- ----------
+Chang                    5
+Rivera                   4
+Collins                  3
+Sen                      3
+Vajpayee                 2
+Williams                 2
+Jones                    1
+Mobley                   1
+
+8 rows selected.
+
+SQL> select name from faculty where name LIKE  '_s%';
+
+no rows selected
+
+SQL> select name from faculty;
+
+NAME
+---------------
+Jones
+Williams
+Mobley
+Vajpayee
+Sen
+Rivera
+Chang
+Collins
+
+8 rows selected.
+
+SQL> select courseid, max(maxcount) as max from crssection group by courseid order by max desc;
+
+COURSE        MAX
+------ ----------
+CIS253         40
+CIS265         35
+AC101          35
+LA123          30
+MA150          25
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENTID                                 NOT NULL CHAR(5)
+ LAST                                      NOT NULL VARCHAR2(15)
+ FIRST                                     NOT NULL VARCHAR2(15)
+ STREET                                             VARCHAR2(25)
+ CITY                                               VARCHAR2(15)
+ STATE                                              VARCHAR2(2)
+ ZIP                                                VARCHAR2(5)
+ BIRTHDAY                                           DATE
+ PHONE                                              CHAR(10)
+ STARTTERM                                          CHAR(4)
+ FACULTYID                                          NUMBER(3)
+ MAJORID                                            NUMBER(3)
+
+SQL> select studentid, initcap(first)||''|| initcap(last) as name from student;
+
+STUDE NAME
+----- ------------------------------
+00100 JoseDiaz
+00101 MickeyTyler
+00102 RajeshPatel
+00103 DeborahRickles
+00104 BrianLee
+00105 AmirKhan
+
+6 rows selected.
+
+SQL> select studentid, initcap(rpad(first,6,''))||''|| initcap(lapd(last,5,',')) as name from student;
+select studentid, initcap(rpad(first,6,''))||''|| initcap(lapd(last,5,',')) as name from student
+                                                          *
+ERROR at line 1:
+ORA-00904: "LAPD": invalid identifier
+
+
+SQL> select studentid, initcap(rpad(first,6,''))||''|| initcap(lpad(last,5,',')) as name from student;
+
+STUDE NAME
+----- --------------------------------------------
+00100 ,Diaz
+00101 Tyler
+00102 Patel
+00103 Rickl
+00104 ,,Lee
+00105 ,Khan
+
+6 rows selected.
+
+SQL> select studentid, initcap(first)||''|| initcap(last) as name from student;
+
+STUDE NAME
+----- ------------------------------
+00100 JoseDiaz
+00101 MickeyTyler
+00102 RajeshPatel
+00103 DeborahRickles
+00104 BrianLee
+00105 AmirKhan
+
+6 rows selected.
+
+SQL> spool out;
+SQL>

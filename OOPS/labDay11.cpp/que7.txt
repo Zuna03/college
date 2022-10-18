@@ -1,0 +1,7 @@
+Name : Xyz
+Roll : 1001
+Gender : F
+Marks : 
+30
+40
+70
